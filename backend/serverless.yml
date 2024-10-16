@@ -17,6 +17,7 @@ provider:
 functions:
   signup:
     handler: functions/signup.handler
+    memorySize: 512
     events:
       - httpApi:
           path: /signup
@@ -24,6 +25,7 @@ functions:
 
   login:
     handler: functions/login.handler
+    memorySize: 512
     events:
       - httpApi:
           path: /login
@@ -31,6 +33,7 @@ functions:
 
   getNotifications:
     handler: functions/getNotifications.handler
+    memorySize: 512
     events:
       - httpApi:
           path: /notifications
@@ -38,6 +41,7 @@ functions:
 
   postNotification:
     handler: functions/postNotification.handler
+    memorySize: 512
     events:
       - httpApi:
           path: /notifications
@@ -45,6 +49,7 @@ functions:
 
   deleteNotification:
     handler: functions/deleteNotification.handler
+    memorySize: 512
     events:
       - httpApi:
           path: /notifications/{id}
