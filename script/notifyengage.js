@@ -1,5 +1,5 @@
 (function() {
-  const apiUrl = "http://localhost:5001/notifications";
+  const apiUrl = "https://umd5qi7gmf.execute-api.us-east-1.amazonaws.com/notifications";
   const businessApiKey = "zpmpgp3ir5gfmz3xsrqxm";
   const notificationKey = 'notificationLastShown';
   const notificationCooldown = 30 * 60 * 1000;
@@ -47,7 +47,12 @@
     }, notificationDuration);
   };
 
-  fetch(`${apiUrl}?key=${businessApiKey}`)
+  const headers = new Headers();
+  headers.append("x-api-key", businessApiKey);
+
+  fetch(`${apiUrl}`, {
+    headers: headers,
+  })
     .then(response => response.json())
     .then(data => {
       if (data.notifications.length > 0) {

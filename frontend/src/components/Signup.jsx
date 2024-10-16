@@ -10,7 +10,7 @@ export default function Signup() {
 
   const handleSignup = async () => {
     try {
-      const res = await axios.post('http://localhost:5001/signup', { email, password });
+      const res = await axios.post(`${process.env.REACT_APP_SERVER_URL || 'http://localhost:5001'}/signup`, { email, password });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('apiKey', res.data.apiKey);
       navigate('/dashboard');

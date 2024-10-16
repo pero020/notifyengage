@@ -10,7 +10,8 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post('http://localhost:5001/login', { email, password });
+      console.log(process.env.REACT_APP_SERVER_URL)
+      const res = await axios.post(`${process.env.REACT_APP_SERVER_URL || 'http://localhost:5001'}/login`, { email, password });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('apiKey', res.data.apiKey);
       navigate('/dashboard');

@@ -3,14 +3,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
-app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("Connected to MongoDB"))
   .catch(err => console.log(err));
 
@@ -76,6 +73,11 @@ const authenticateJwtAndAPIKey = async (req, res, next) => {
 const generateAPIKey = () => {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 };
+
+	
+app.get('/', function (req, res) {
+  res.send('Greetings user!')
+})
 
 app.post('/signup', async (req, res) => {
   const { email, password } = req.body;
@@ -150,11 +152,6 @@ app.delete('/notifications/:id', authenticateJwtAndAPIKey, async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "Server error" });
   }
-});
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
 });
 
 module.exports.handler = serverless(app);

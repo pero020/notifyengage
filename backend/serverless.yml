@@ -1,31 +1,54 @@
 service: notifyengage-backend
+frameworkVersion: "3"
 
 useDotenv: true
 
 provider:
   name: aws
   runtime: nodejs18.x
-  region: us-east-1 
+  region: us-east-1
+  stage: dev
+  httpApi:
+    cors: true
   environment:
     MONGO_URI: ${env:MONGO_URI}
     JWT_SECRET: ${env:JWT_SECRET}
-    PORT: ${env:PORT}
 
 functions:
-  app:
-    handler: app.handler
+  signup:
+    handler: functions/signup.handler
     events:
-      - http:
-          path: /
+      - httpApi:
+          path: /signup
+          method: post
+
+  login:
+    handler: functions/login.handler
+    events:
+      - httpApi:
+          path: /login
+          method: post
+
+  getNotifications:
+    handler: functions/getNotifications.handler
+    events:
+      - httpApi:
+          path: /notifications
           method: get
-      - http:
-          path: /{proxy+}
-          method: any
+
+  postNotification:
+    handler: functions/postNotification.handler
+    events:
+      - httpApi:
+          path: /notifications
+          method: post
+
+  deleteNotification:
+    handler: functions/deleteNotification.handler
+    events:
+      - httpApi:
+          path: /notifications/{id}
+          method: delete
 
 plugins:
   - serverless-offline
-
-package:
-  exclude:
-    - node_modules/**
-    - .git/**

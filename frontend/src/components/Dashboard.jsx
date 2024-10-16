@@ -14,16 +14,22 @@ export default function Dashboard() {
     if (!token) {
       navigate('/login');
     }
-    axios.get(`http://localhost:5001/notifications?key=${apiKey}`, {
-      headers: { Authorization: token }
+    axios.get(`${process.env.REACT_APP_SERVER_URL || 'http://localhost:5001'}/notifications`, {
+      headers: {
+        Authorization: token,
+        'x-api-key': apiKey 
+      }
     })
       .then(res => setNotifications(res.data.notifications))
       .catch(err => console.error("Error fetching notifications", err));
-  }, [apiKey, token]);
+  }, [apiKey, navigate, token]);
 
   const handleCreate = () => {
-    axios.post(`http://localhost:5001/notifications?key=${apiKey}`, { message, url }, {
-      headers: { Authorization: token }
+    axios.post(`${process.env.REACT_APP_SERVER_URL || 'http://localhost:5001'}/notifications`, { message, url }, {
+      headers: { 
+        Authorization: token,
+        'x-api-key': apiKey
+       }
     })
       .then(res => {
         setNotifications([...notifications, res.data]);
@@ -34,8 +40,11 @@ export default function Dashboard() {
   };
 
   const handleDelete = (id) => {
-    axios.delete(`http://localhost:5001/notifications/${id}?key=${apiKey}`, {
-      headers: { Authorization: token }
+    axios.delete(`${process.env.REACT_APP_SERVER_URL || 'http://localhost:5001'}/notifications/${id}`, {
+      headers: { 
+        Authorization: token,
+        'x-api-key': apiKey 
+      }
     })
       .then(() => {
         setNotifications(notifications.filter(n => n._id !== id));
